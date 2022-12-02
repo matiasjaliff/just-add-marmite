@@ -34,6 +34,15 @@ export async function getStaticProps({ params }) {
     "fields.slug": params.slug,
   });
 
+  if (!items.length) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: { recipe: items[0] },
     revalidate: 1,
@@ -42,11 +51,8 @@ export async function getStaticProps({ params }) {
 
 export default function RecipeDetails({ recipe }) {
   if (!recipe) {
-    console.log("Sin receta");
     return <Skeleton />;
   }
-
-  console.log("Con receta");
 
   const { featuredImage, title, cookingTime, ingredients, method } =
     recipe.fields;
